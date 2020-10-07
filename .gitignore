@@ -1,0 +1,9 @@
+.Rproj.user
+doc
+Meta
+.RData
+.Rhistory
+*.Rproj
+biocasia2020tidytranscriptomics.Rcheck/
+biocasia2020tidytranscriptomics*.tar.gz
+biocasia2020tidytranscriptomics*.tgz

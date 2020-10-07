@@ -1,0 +1,14 @@
+^.*\.Rproj$
+^\.Rproj\.user$
+^doc$
+^Meta$
+^LICENSE\.md$
+.github
+Dockerfile
+_pkgdown.yml
+^data-raw$
+dev$
+CONTRIBUTING.md
+^biocasia2020tidytranscriptomics\.Rcheck$
+^biocasia2020tidytranscriptomics.*\.tar\.gz$
+^biocasia2020tidytranscriptomics.*\.tgz$
