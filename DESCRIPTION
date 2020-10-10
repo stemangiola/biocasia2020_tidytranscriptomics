@@ -20,7 +20,8 @@ Depends:
 Imports:
     tidybulk,
     tidygate,
-    Seurat,
+    scater,
+    scran,
     tidyseurat,
     tidyHeatmap,
     stats,
