@@ -667,7 +667,7 @@ We proceed to plot. _Note: we don't need to create many of these temporary varia
 
 ```{r}
 pbmc_small_polished_abundance %>%
-  ggplot(aes(groups, abundance_counts + 1, fill=groups)) +
+  ggplot2::ggplot(aes(groups, abundance_counts + 1, fill=groups)) +
   geom_boxplot(outlier.shape=NA) +
   geom_jitter(alpha=0.5, width=0.2) +
   scale_y_log10() +
@@ -802,7 +802,7 @@ pbmc_small_cluster %>%
 
 We can infer cell type identities using *SingleR* [@aran2019reference] and manipulate the output using tidyverse. SingleR [accepts any log-normalised transcript abundance matrix](https://bioconductor.org/packages/devel/bioc/vignettes/SingleR/inst/doc/SingleR.html)
 
-```{r}
+```{r eval=FALSE}
 # Get cell type reference data
 hpca <- HumanPrimaryCellAtlasData()
 
@@ -828,7 +828,7 @@ cell_type_df <-
 cell_type_df
 ```
 
-```{r}
+```{r eval=FALSE}
 # Join UMAP and cell type info
 pbmc_small_cell_type <-
   pbmc_small_cluster %>%
@@ -842,7 +842,7 @@ pbmc_small_cell_type
 
 We can easily summarise the results. For example, we can see how cell type classification overlaps with cluster classification.
 
-```{r}
+```{r eval=FALSE}
 pbmc_small_cell_type %>%
   count(label, first.labels)
 ```
@@ -852,7 +852,7 @@ pbmc_small_cell_type %>%
 
 A powerful tool we can use with tidySCE is `nest`. We can easily perform independent analyses on subsets of the dataset. First we classify cell types in lymphoid and myeloid; then, nest based on the new classification
 
-```{r}
+```{r eval=FALSE}
 pbmc_small_nested <-
   pbmc_small_cell_type %>%
   filter(first.labels != "Platelets") %>%
@@ -870,7 +870,7 @@ pbmc_small_nested
 
 Now we can independently perform analyses for the lymphoid and myeloid cell subsets.
 
-```{r, warning=FALSE}
+```{r, eval=FALSE, warning=FALSE}
 pbmc_small_nested %>%
 mutate(variable_genes = map_chr(
   data, ~ .x %>%
