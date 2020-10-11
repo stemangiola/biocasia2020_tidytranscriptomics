@@ -29,11 +29,6 @@ background-color: #fff4d4;
 }
 ```
 
-# Background
-
-Background information and setup instructions for this workshop can be found [here](https://stemangiola.github.io/biocasia2020_tidytranscriptomics/articles/background.html).
-
-
 # Part 1 Bulk RNA-seq Core
 
 This workshop will present how to perform analysis of RNA sequencing data following the tidy data paradigm [@wickham2014tidy]. The tidy data paradigm provides a standard way to organise data values within a dataset, where each variable is a column, each observation is a row, and data is manipulated using an easy-to-understand vocabulary. Most importantly, the data structure remains consistent across manipulation and analysis functions.
@@ -42,7 +37,7 @@ This can be achieved for RNA sequencing data with the [tidybulk](https://stemang
 
 
 ### Acknowledgements
-Some of the material in Part 1 was adapted from an R for RNA sequencing workshop first run [here](http://combine-australia.github.io/2016-05-11-RNAseq/). Use of the airway and pasilla datasets was inspired by the [DESeq2 vignette](http://bioconductor.org/packages/devel/bioc/vignettes/DESeq2/inst/doc/DESeq2.html).
+Some of the material in Part 1 was adapted from an R for RNA sequencing workshop first run [here](http://combine-australia.github.io/2016-05-11-RNAseq/). Use of the airway dataset was inspired by the [DESeq2 vignette](http://bioconductor.org/packages/devel/bioc/vignettes/DESeq2/inst/doc/DESeq2.html).
 
 ```{r, echo=FALSE, out.width = "100px"}
 knitr::include_graphics("../inst/vignettes/tidybulk_logo.png")
@@ -65,6 +60,10 @@ Poll: Do you have experience with tidyverse?
 Measuring gene expression on a genome-wide scale has become common practice over the last two decades or so, with microarrays predominantly used pre-2008. With the advent of next generation sequencing technology in 2008, an increasing number of scientists use this technology to measure and understand changes in gene expression in often complex systems. As sequencing costs have decreased, using RNA sequencing to simultaneously measure the expression of tens of thousands of genes for multiple samples has never been easier. The cost of these experiments has now moved from generating the data to storing and analysing it.
 
 There are many steps involved in analysing an RNA sequencing dataset. Sequenced reads are aligned to a reference genome, then the number of reads mapped to each gene can be counted. This results in a table of counts, which is what we perform statistical analyses on in R. While mapping and counting are important and necessary tasks, today we will be starting from the count data and showing how differential expression analysis can be performed in a friendly way using the Bioconductor package, tidybulk.
+
+```{r, echo=FALSE}
+knitr::include_graphics("../inst/vignettes/bulk_RNAseq_pipeline.png")
+```
 
 
 First, let’s load all the packages we will need to analyse the data. Note that you should load the *tidybulk* library after the tidyverse core packages for best integration.
@@ -575,51 +574,10 @@ Tidybulk provides a handy function called `get_bibliography` that you can use to
 get_bibliography(counts_de)
 ```
 
-## Key Points
-- RNA sequencing data can be represented and analysed in a 'tidy' way using tidybulk and the tidyverse
-- With the modularity offered by piping we don't need to create variables, unless an object is used more than one. This improves robustness of the code.
-- The principles of tidy transcriptomics are to interface as much as possible with commonly known manipulation and visualisation tools, rather than creating custom functions.
-- Some of the key steps in an RNA sequencing analysis are (i) filtering lowly abundant transcripts, (ii) adjusting for differences in sequencing depth and composition, (iii) testing for differential expression
-- Dimensionality reduction (PCA or MDS) plots are very important for exploring the data
-- Density plots, volcano plots, strip-charts and heatmaps are useful visualisation tools for evaluating the hypothesis testing.
-
-## Supplementary
-Some things we don't have time to cover in Part 1 of this workshop can be found in the [Supplementary material](https://stemangiola.github.io/biocasia2020_tidytranscriptomics/articles/supplementary.html).
-
-## Exercises
-
-Try to apply what you've learned to another dataset. This dataset was generated from the pasilla package, which obtained the data from the paper by [@brooks2011conservation]. Here we provide it as a SummarizedExperiment object. The dataset has 7 samples from Drosophila (fruitfly): 3 treated with siRNA knockdown of the pasilla gene and 4 untreated controls, noted in column "condition". Some of the samples have been sequenced with paired-end sequencing and some with single-end, noted in column "type".
-
-Load the data and create the tidybulk object with:
-```{r}
-data("pasilla", package = "biocasia2020tidytranscriptomics")
-counts_tt <-
-    pasilla %>%
-    tidybulk() %>%
-    mutate(symbol = AnnotationDbi::mapIds(org.Dm.eg.db::org.Dm.eg.db, keys=as.character(feature), keytype = "FLYBASE", column="SYMBOL", multiVals = "first"))
-```
-
-
-```{poll_6 class.source="poll"}
-Poll: 
-1) What is the Fraction of Variance for PC1?  
-2) How many differentially expressed genes are there for treated vs untreated (FDR < 0.05)?  
-3) What is the FBgn id of the 10th most differentially expressed gene (by smallest P value)?
-```
-
-
-Extra  
-1.4 What code can generate a heatmap of variable genes (starting from `count_scaled`)?  
-1.5 What code can you use to visualise expression of the pasilla gene (gene id: FBgn0261552)  
-1.6 What code can generate an interactive volcano plot that has gene ids showing on hover?  
-1.7 What code can generate a heatmap of the top 100 differentially expressed genes?  
-
-
-# Part 2 Bulk RNA-seq Extended
 
 ## Tidybulk ADD versus GET modes
 
-In this Part 2 we will see `action="get"` being used, so we will explain here what it is doing.
+We will see `action="get"` being used in the next section, so we will explain here what it is doing.
 
 Every tidybulk function takes a tidybulk tibble as input, and  
  * `action="add"` outputs the new information joined to the original input data frame (default)  
@@ -658,72 +616,41 @@ We can perform differential analysis with several methods, and the results will 
 ```{r message=FALSE, warning=FALSE}
 # load additional libraries
 library(forcats)
-library(tidygate)
 library(GGally)
 ```
 
-As before, we first pre-process the data, creating a tibble and identifying abundant genes.
-
-```{r}
-pasilla_de <- 
-  biocasia2020tidytranscriptomics::pasilla %>% 
-  
-  # Convert SummarizedExperiment object to tibble
-  tidybulk() %>%
-    
-  # Add gene symbols
-  mutate(symbol = AnnotationDbi::mapIds(org.Dm.eg.db::org.Dm.eg.db,   keys=as.character(feature), keytype = "FLYBASE", column="SYMBOL", multiVals = "first")) %>%
-  
-  # Filter counts
-  keep_abundant(factor_of_interest=condition)
-```
-
-This is an example for the default method for differential abundance testing as we saw previously with the airway dataset. It uses the edgeR quasi-likelihood method.
-
-```{r}
-pasilla_de %>%
-  
-  # Test differential composition
-  test_differential_abundance(
-    ~ condition + type, 
-    action="get"
-  ) %>%
-
-  # Sort by P value        
-  arrange(PValue)
-```
 
 Now let's try to perform multiple methods on the same dataset.
 
 ```{r message=FALSE}
 de_all <- 
   
-  pasilla_de %>%
+  counts_filtered %>%
   
   # edgeR QLT
   test_differential_abundance(
-    ~ condition + type, 
+    ~ dex + cell, 
     method = "edger_quasi_likelihood",
     prefix = "edgerQLT_"
   )  %>%
   
   # edgeR LRT
   test_differential_abundance(
-    ~ condition + type, 
+    ~ dex + cell, 
     method = "edger_likelihood_ratio",
     prefix = "edgerLR_"
   )  %>%
   
   # limma-voom
   test_differential_abundance(
-    ~ condition + type, 
+    ~ dex + cell, 
     method = "limma_voom",
     prefix = "voom_"
   ) %>%
   
   # DESeq2
   test_differential_abundance(
-    ~ condition + type, 
+    ~ dex + cell,  
     method = "deseq2",
     prefix = "deseq2_"
   ) 
@@ -765,89 +692,6 @@ de_all %>%
   pivot_transcript() %>%
   select(edgerQLT_PValue, edgerLR_PValue, voom_P.Value, deseq2_pvalue, feature) %>%
   ggpairs(1:4)
-```
-
-We can select some of the transcripts for further analysis using the [*tidygate*](https://github.com/stemangiola/tidygate) package.
-
-With tidygate, we can interactively draw gates to select points we want using `gate`. We specify which columns we want to plot in the scatterplot, and how many gates we want to draw. We can also specify the opacity if we want to make it easier to see overlapping points.
-
-```{r, eval=FALSE}
-de_gate <- 
-  de_all %>%
-  
-  gate(
-    feature,
-    edgerQLT_PValue, 
-    deseq2_pvalue, 
-    opacity=0.3, 
-    how_many_gates = 2 
-  )
-```
-
-We then click to draw gates around the points we want, for example as shown in the screenshot below.
-
-```{r, echo=FALSE}
-knitr::include_graphics("../inst/vignettes/comparison_different_DE_methods_gates.png")
-```
-That will add a column called gate, specifying which gate the points (transcripts) are in.
-
-```{r echo=FALSE}
-# using pre-selected gates just to render the html version of this document
-de_gate <- 
-  de_all %>%
-  
-  gate(
-    feature,
-    edgerQLT_PValue, 
-    deseq2_pvalue, gate_list = biocasia2020tidytranscriptomics::de_gate_gates
-  )
-
-de_gate
-```
-
-We can check how many transcripts we've got in each gate.
-
-```{r}
-de_gate %>% 
-    pivot_transcript() %>% 
-    dplyr::count(gate)
-```
-
-We can now select the transcripts from our two gates i.e. more significant in edgeR (gate 1) and more significant in DESeq2 (gate 2).
-
-```{r}
-de_gate %>% 
-    
-  # Generate scaled counts for plotting     
-  scale_abundance() %>%
-  
-  # Filter for transcripts within the gates
-  filter(gate > 0) %>% 
-  
-  # Rename for clarity
-  mutate(gate = case_when(
-    gate == 1 ~ "more in edgeR",
-    gate == 2 ~ "more in DESeq2",
-    TRUE ~ gate
-  )) %>%
-  
-  # Order the plots for the transcripts
-  mutate(feature = fct_reorder(feature, edgerQLT_PValue, min)) %>%
-  
-  # Plot
-  ggplot(aes(condition, counts_scaled, color=gate)) +
-  geom_point() +
-  facet_wrap(~feature, scale="free_y") +
-  custom_theme
-```
-
-This enables us to see, for example, that DESeq2 produces a more conservative logFC statistic for the transcript `FBgn0052939` .
-
-```{r}
-de_gate %>%
-  pivot_transcript %>%
-  filter(feature == "FBgn0052939")%>%
-  select(edgerQLT_logFC, deseq2_log2FoldChange)
 ```
 
 
@@ -962,22 +806,28 @@ BRCA_tidy_survival %>%
 
 ## Key Points
 
+- RNA sequencing data can be represented and analysed in a 'tidy' way using tidybulk and the tidyverse
+- With the modularity offered by piping we don't need to create variables, unless an object is used more than one. This improves robustness of the code.
+- The principles of tidy transcriptomics are to interface as much as possible with commonly known manipulation and visualisation tools, rather than creating custom functions.
+- Some of the key steps in an RNA sequencing analysis are (i) filtering lowly abundant transcripts, (ii) adjusting for differences in sequencing depth and composition, (iii) testing for differential expression
+- Dimensionality reduction (PCA or MDS) plots are very important for exploring the data
+- Density plots, volcano plots, strip-charts and heatmaps are useful visualisation tools for evaluating the hypothesis testing.
 - `tidybulk` allows streamlined multi-method analyses
-- `tidygate` allows the selection of arbitrary points in a two-dimensional plot, and add the gate information to the input tibble
 - `tidybulk` allow easy analyses of cell type composition
 - Testing for differences in tissue composition between samples is analogous to the testing for differences in transcript abundance 
 
 ## Supplementary
-Some things we don't have time to cover in Part 2 of this workshop can be found in the [Supplementary material](https://stemangiola.github.io/biocasia2020_tidytranscriptomics/articles/supplementary.html).
-
-## Q & A
+Some things we don't have time to cover in Part 1 of this workshop can be found in the [Supplementary material](https://stemangiola.github.io/biocasia2020_tidytranscriptomics/articles/supplementary.html).
 
 
-# Part 3 Single-cell RNA-seq
+# Part 2 Single-cell RNA-seq
 
-[Background information] (https://stemangiola.github.io/biocasia2020_tidytranscriptomics/articles/background.html#differences-between-bulk-and-single-cell-rna-sequencing-1)
+```{r, echo=FALSE}
+knitr::include_graphics("../inst/vignettes/single_cell_RNAseq_pipeline.png")
+```
 
-In Part 2 we showed how we can study the cell-type composition of a biological sample using bulk RNA sequencing.  Single cell sequencing enables a more direct estimation of cell-type composition and gives greater resolution. For bulk RNA sequencing we need to infer the cell types using the abundance of transcripts in the whole sample, with single-cell RNA sequencing we can directly measure the transcripts in each cell and then classify the cells into cell types. 
+
+In Part 1 we showed how we can study the cell-type composition of a biological sample using bulk RNA sequencing.  Single cell sequencing enables a more direct estimation of cell-type composition and gives greater resolution. For bulk RNA sequencing we need to infer the cell types using the abundance of transcripts in the whole sample, with single-cell RNA sequencing we can directly measure the transcripts in each cell and then classify the cells into cell types. 
 
 SingleCellExperiment is a very popular container for single cell RNA sequencing data [@sce] .
 
