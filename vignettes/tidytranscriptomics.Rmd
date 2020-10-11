@@ -461,7 +461,7 @@ counts_de %>%
 
 A more informative plot, integrating some of the packages in tidyverse.
 
-```{r out.width = "70%", warning=FALSE, message=FALASE}
+```{r out.width = "70%", warning=FALSE, message=FALSE}
 # identify some genes to label
 topgenes <- c("CACNB2", "ZBTB16", "PRSS35", "PDPN", "SPARCL1", "DUSP1")
 
