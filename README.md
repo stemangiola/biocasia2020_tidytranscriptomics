@@ -18,7 +18,7 @@
 
 Material [web page](https://stemangiola.github.io/biocasia2020_tidytranscriptomics/articles/tidytranscriptomics.html).
 
-This material was created for the R/Pharma2020 conference workshop but it can also be used for self-learning.
+This material was created for the [BioC Asia 2020 conference](https://biocasia2020.bioconductor.org/) workshop but it can also be used for self-learning.
 
 More details on the workshop are below.
 
@@ -74,7 +74,7 @@ Recommended Background Reading
 
 ### Workshop Participation
 
-The workshop format is a 3 hour session consisting of hands-on demos, exercises and Q&A.
+The workshop format is a 55 min session consisting of hands-on demos with Q&A.
 
 ### _R_ / _Bioconductor_ packages used
 
@@ -101,26 +101,15 @@ Rough guide
 
 | Activity                                              | Time |
 |-------------------------------------------------------|------|
-| **Part 1 Bulk RNA-seq Core**                          |      |
-|  *Hands-on Demos*                                     |  50m |
-|      Introduction to RNA-seq                          |      |
-|      Data preprocessing                               |      |
-|      Data dimensionality reduction and clustering     |      |
-|      Differential gene expression                     |      |
-|      Data visualisation                               |      |
-|  *Exercises and Q&A*                                  |  10m |
-| _Break_                                               |   5m |
-| **Part 2 Bulk RNA-seq Extended**                      |      |
-|  *Hands-on Demos*                                     |  40m |
+| **Part 1 Bulk RNA-seq**                               |      |
+|  *Hands-on Demos*                                     |  25m |
+|      Differential expression analysis with tidybulk   |      |
 |      Comparison of differential testing tools         |      |
 |      Cell type composition analysis                   |      |
-|  *Q&A*                                                |  10m |
-| _Break_                                               |   5m |
-| **Part 3 Single-cell RNA-seq**                        |      |
+| **Part 2 Single-cell RNA-seq**                        |      |
 |  *Hands-on Demos*                                     |  30m |
-|      Introduction to single-cell                      |      |
-| **Additional Q&A**                                    |  30m |
-| Total                                                 | 180m |
+|      Single-cell analysis with tidySCE                |      |
+| Total                                                 |  55m |
 
 ### Workshop goals and objectives
 
