@@ -90,7 +90,6 @@ The workshop format is a 55 min session consisting of hands-on demos with Q&A.
 * scran
 * airway
 * org.Hs.eg.db
-* org.Dm.eg.db
 * dittoSeq
 * ggrepel
 * GGally
@@ -103,15 +102,9 @@ Rough guide
 
 | Activity                                              | Time |
 |-------------------------------------------------------|------|
-| **Part 1 Bulk RNA-seq**                               |      |
-|  *Hands-on Demos*                                     |  25m |
-|      Differential expression analysis with tidybulk   |      |
-|      Comparison of differential testing tools         |      |
-|      Cell type composition analysis                   |      |
-| **Part 2 Single-cell RNA-seq**                        |      |
-|  *Hands-on Demos*                                     |  30m |
-|      Single-cell analysis with tidySCE                |      |
-| Total                                                 |  55m |
+| Part 1 Bulk RNA-seq with tidybulk                     | 25m  |
+| Part 2 Single-cell RNA-seq with tidySCE               | 30m  |
+| Total                                                 | 55m  |
 
 ### Workshop goals and objectives
 
