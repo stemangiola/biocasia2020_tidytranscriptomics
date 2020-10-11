@@ -9,7 +9,7 @@ Authors@R: c(
     role = c("aut","cre"),
     comment = c(ORCID = "0000-0001-7474-836X")))
 Maintainer: Maria Doyle <maria.doyle@petermac.org>, Stefano Mangiola <mangiola.s@wehi.edu.au>
-Description: This workshop will present how to perform analysis of RNA sequencing data following the tidy data paradigm, using the tidybulk, tidyseurat, tidyHeatmap and tidyverse packages.
+Description: This workshop will present how to perform analysis of RNA sequencing data following the tidy data paradigm, using the tidybulk, tidySCE, tidyHeatmap and tidyverse packages.
 License: CC BY-SA 4.0 + file LICENSE
 Encoding: UTF-8
 LazyData: true
@@ -19,10 +19,9 @@ Depends:
     R (>= 4.0.0)
 Imports:
     tidybulk,
-    tidygate,
+    tidySCE,
     scater,
     scran,
-    tidyseurat,
     tidyHeatmap,
     stats,
     utils,
@@ -47,8 +46,6 @@ Imports:
     plotly,
     survival,
     SingleR,
-    scater,
-    scran,
     SummarizedExperiment,
     SingleCellExperiment
 Suggests:
