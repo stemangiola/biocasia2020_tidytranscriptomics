@@ -12,7 +12,6 @@ jobs:
           
           # We'll install the specific versions from the install instructions
           BiocManager::install("stemangiola/tidybulk@v1.1.8", version="devel")
-          BiocManager::install("stemangiola/tidygate@v0.2.8", version="devel")
           BiocManager::install("stemangiola/tidySCE@v0.99.0", version="devel")
           BiocManager::install("stemangiola/tidyHeatmap@v1.1.5", version="devel")
           

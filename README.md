@@ -46,7 +46,7 @@ Alternatively, you could install the workshop using the commands below in R `4.0
 ```
 # Install same versions used in the workshop
 #install.packages('remotes')
-remotes::install_github(c("stemangiola/tidybulk@v1.1.8", "stemangiola/tidygate@v0.2.8", "stemangiola/tidySCE@v0.1.8", "stemangiola/tidyHeatmap@v1.1.5"))
+remotes::install_github(c("stemangiola/tidybulk@v1.1.8", "stemangiola/tidySCE@v0.99.0", "stemangiola/tidyHeatmap@v1.1.5"))
 
 # Install workshop package
 remotes::install_github("stemangiola/biocasia2020_tidytranscriptomics", build_vignettes = TRUE)
@@ -82,7 +82,6 @@ The workshop format is a 55 min session consisting of hands-on demos with Q&A.
 * tidybulk
 * tidySCE
 * tidyHeatmap
-* tidygate
 * limma
 * edgeR
 * DESeq2
