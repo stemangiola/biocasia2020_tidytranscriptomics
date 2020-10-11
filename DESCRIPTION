@@ -46,7 +46,11 @@ Imports:
     GGally,
     plotly,
     survival,
-    SingleR
+    SingleR,
+    scater,
+    scran,
+    SummarizedExperiment,
+    SingleCellExperiment
 Suggests:
     knitr,
     rmarkdown,
