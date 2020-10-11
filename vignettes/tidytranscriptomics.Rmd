@@ -895,7 +895,7 @@ pbmc_small_polished <-
 pbmc_small_polished
 ```
 
-# Calculation the logerithm of the scaled counts
+## Calculation the logerithm of the scaled counts
 
 We can treat `pbmc_small_polished` as a *SingleCellExperiment* object. 
 From [here](https://www.bioconductor.org/packages/release/bioc/vignettes/SingleCellExperiment/inst/doc/intro.html)
@@ -908,7 +908,7 @@ logcounts(pbmc_small_polished) <- log2(t(t(counts)/size.factors) + 1)
 assayNames(pbmc_small_polished)
 ```
 
-# Exploration
+## Exploration
 
 Here we plot abundance of two transcripts for each group.
 
@@ -1021,7 +1021,7 @@ pbmc_small_cluster %>%
 knitr::include_graphics("../inst/vignettes/plotly.png")
 ```
 
-# Plotting heatmap with scater
+## Plotting heatmap with scater
 
 ```{r}
 plotHeatmap(
@@ -1032,7 +1032,8 @@ plotHeatmap(
 ) 
 
 ```
-# Plotting heatmap with tidyverse
+
+## Plotting heatmap with tidyverse
 
 ```{r}
 pbmc_small_cluster %>%
