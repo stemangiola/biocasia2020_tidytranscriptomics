@@ -895,7 +895,7 @@ pbmc_small_polished <-
 pbmc_small_polished
 ```
 
-## Calculation the logerithm of the scaled counts
+## Calculation the logarithm of the scaled counts
 
 We can treat `pbmc_small_polished` as a *SingleCellExperiment* object. 
 From [here](https://www.bioconductor.org/packages/release/bioc/vignettes/SingleCellExperiment/inst/doc/intro.html)
@@ -967,7 +967,7 @@ pbmc_small_pca %>%
 
 ### UMAP
 
-Beside PCA which is a linear dimensionality reduction, we can apply neighbour aware methods such as UMAP, to better define locally similar cells. We can calculate the first 3 UMAP dimensions using the Seurat framework.
+Beside PCA which is a linear dimensionality reduction, we can apply neighbour aware methods such as UMAP, to better define locally similar cells. We can calculate the first 3 UMAP dimensions using the scater framework.
 
 ```{r umap}
 pbmc_small_UMAP <-
@@ -1021,7 +1021,9 @@ pbmc_small_cluster %>%
 knitr::include_graphics("../inst/vignettes/plotly.png")
 ```
 
-## Plotting heatmap with scater
+## Plotting heatmap 
+
+### Using scater
 
 ```{r}
 plotHeatmap(
@@ -1033,7 +1035,7 @@ plotHeatmap(
 
 ```
 
-## Plotting heatmap with tidyverse
+### Using tidyverse
 
 ```{r}
 pbmc_small_cluster %>%
@@ -1055,7 +1057,7 @@ pbmc_small_cluster %>%
 
 ```
 
-## Automatic cell type classification
+## Cell type classification
 
 We can infer cell type identities using *SingleR* [@aran2019reference] and manipulate the output using tidyverse. SingleR [accepts any log-normalised transcript abundance matrix](https://bioconductor.org/packages/devel/bioc/vignettes/SingleR/inst/doc/SingleR.html)
 
@@ -1066,7 +1068,7 @@ hpca <- HumanPrimaryCellAtlasData()
 # Infer cell identities
 cell_type_df <-
 	
-  # extracting counts from Seurat object
+  # extracting counts from SingleCellExperiment object
   assays(pbmc_small_UMAP)$logcounts%>%
 
 	# SingleR
@@ -1125,7 +1127,7 @@ pbmc_small_nested <-
 pbmc_small_nested
 ```
 
-Now we can independently for the lymphoid and myeloid subsets (i) find variable features, (ii) reduce dimensions, and (iii) cluster using both tidyverse and Seurat seamlessly.
+Now we can independently perform analyses for the lymphoid and myeloid cell subsets.
 
 ```{r, warning=FALSE}
 pbmc_small_nested %>%
