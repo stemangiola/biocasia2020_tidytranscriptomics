@@ -20,6 +20,7 @@ Depends:
 Imports:
     tidybulk,
     tidySCE,
+    uwot,
     scater,
     scran,
     tidyHeatmap,
