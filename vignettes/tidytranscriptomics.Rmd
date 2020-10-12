@@ -823,9 +823,10 @@ cell_type_df <-
   select(label, first.labels)
 ```
 
-We have precalculated the cluster classification
+We have pre-calculated the cluster classification
 
 ```{r}
+cell_type_df = biocasia2020tidytranscriptomics::cell_type_df
 cell_type_df
 ```
 
@@ -834,7 +835,7 @@ cell_type_df
 pbmc_small_cell_type <-
   pbmc_small_cluster %>%
   left_join(
-    cell_type_df, 
+    biocasia2020tidytranscriptomics::cell_type_df, 
   	by = "label"
   )
 
