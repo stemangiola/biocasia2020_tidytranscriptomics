@@ -572,13 +572,6 @@ In Part 1 we showed how we can study the cell-type composition of a biological s
 
 SingleCellExperiment is a very popular container for single cell RNA sequencing data [@sce] .
 
-  @Manual{sce,
-    title = {SingleCellExperiment: S4 Classes for Single Cell Data},
-    author = {Aaron Lun and Davide Risso},
-    year = {2020},
-    note = {R package version 1.10.1},
-  }
-
 tidySCE provides a bridge between the SingleCellExperiment single-cell package [@sce] and the tidyverse [@wickham2019welcome]. It enables the display the
 SingleCellExperiment object as a tidyverse tibble, and provides SingleCellExperiment-compatible *dplyr*, *tidyr*, *ggplot* and *plotly* functions.
 
@@ -663,7 +656,8 @@ pbmc_small_polished_abundance =
 pbmc_small_polished_abundance
 ```
 
-We proceed to plot. _Note: we don't need to create many of these temporary variables. Here are created for educational purposes only._
+We proceed to plot. 
+_Note: we don't need to create many of these temporary variables. Here are created for educational purposes only._
 
 ```{r}
 pbmc_small_polished_abundance %>%
