@@ -807,7 +807,7 @@ hpca <- HumanPrimaryCellAtlasData()
 cell_type_df <-
 	
   # extracting counts from SingleCellExperiment object
-  assays(pbmc_small_UMAP)$logcounts%>%
+  assays(pbmc_small_cluster)$logcounts%>%
 
 	# SingleR
   SingleR(
