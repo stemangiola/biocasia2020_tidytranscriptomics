@@ -309,7 +309,7 @@ The samples separate by treatment on PC1 which is what we hope to see. PC2 separ
 An alternative to principal component analysis for examining relationships between samples is using hierarchical clustering. Heatmaps are a nice visualisation to examine hierarchical clustering of your samples. tidybulk has a simple function we can use, `keep_variable`, to extract the most variable genes which we can then plot with tidyHeatmap.
 
 ```{r out.width = "70%"}
-counts_scaled %>%
+counts_scal_PCA %>%
 
 	# extract 500 most variable genes
 	keep_variable(.abundance = counts_scaled, top = 500) %>%
@@ -357,7 +357,7 @@ We give `test_differential_abundance` our tidybulk counts object and a formula, 
 ```{r message=FALSE}
 de_all <- 
   
-  counts_filtered %>%
+  counts_scal_PCA %>%
   
   # edgeR QLT
   test_differential_abundance(
@@ -422,7 +422,7 @@ Which method detects the most differentially abundant transcripts, p value adjus
 Or if we just wanted to run one method we could do that. The default method is edgeR quasi-likelihood.
 
 ```{r}
-counts_de <- counts_filtered %>%
+counts_de <- counts_scal_PCA %>%
     test_differential_abundance(~ dex + cell)
 ```
 
