@@ -48,7 +48,8 @@ Imports:
     survival,
     SingleR,
     SummarizedExperiment,
-    SingleCellExperiment
+    SingleCellExperiment,
+    igraph
 Suggests:
     knitr,
     rmarkdown,

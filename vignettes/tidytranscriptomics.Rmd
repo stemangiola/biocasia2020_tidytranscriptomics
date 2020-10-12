@@ -309,7 +309,7 @@ The samples separate by treatment on PC1 which is what we hope to see. PC2 separ
 An alternative to principal component analysis for examining relationships between samples is using hierarchical clustering. Heatmaps are a nice visualisation to examine hierarchical clustering of your samples. tidybulk has a simple function we can use, `keep_variable`, to extract the most variable genes which we can then plot with tidyHeatmap.
 
 ```{r out.width = "70%"}
-counts_scaled %>%
+counts_scal_PCA %>%
 
 	# extract 500 most variable genes
 	keep_variable(.abundance = counts_scaled, top = 500) %>%
@@ -357,7 +357,7 @@ We give `test_differential_abundance` our tidybulk counts object and a formula, 
 ```{r message=FALSE}
 de_all <- 
   
-  counts_filtered %>%
+  counts_scal_PCA %>%
   
   # edgeR QLT
   test_differential_abundance(
@@ -422,7 +422,7 @@ Which method detects the most differentially abundant transcripts, p value adjus
 Or if we just wanted to run one method we could do that. The default method is edgeR quasi-likelihood.
 
 ```{r}
-counts_de <- counts_filtered %>%
+counts_de <- counts_scal_PCA %>%
     test_differential_abundance(~ dex + cell)
 ```
 
@@ -572,13 +572,6 @@ In Part 1 we showed how we can study the cell-type composition of a biological s
 
 SingleCellExperiment is a very popular container for single cell RNA sequencing data [@sce] .
 
-  @Manual{sce,
-    title = {SingleCellExperiment: S4 Classes for Single Cell Data},
-    author = {Aaron Lun and Davide Risso},
-    year = {2020},
-    note = {R package version 1.10.1},
-  }
-
 tidySCE provides a bridge between the SingleCellExperiment single-cell package [@sce] and the tidyverse [@wickham2019welcome]. It enables the display the
 SingleCellExperiment object as a tidyverse tibble, and provides SingleCellExperiment-compatible *dplyr*, *tidyr*, *ggplot* and *plotly* functions.
 
@@ -594,6 +587,7 @@ library(SummarizedExperiment)
 library(SingleCellExperiment)
 library(scater)
 library(scran)
+library(igraph)
 library(SingleR)
 library(tidySCE)
 ```
@@ -663,7 +657,8 @@ pbmc_small_polished_abundance =
 pbmc_small_polished_abundance
 ```
 
-We proceed to plot. _Note: we don't need to create many of these temporary variables. Here are created for educational purposes only._
+We proceed to plot. 
+_Note: we don't need to create many of these temporary variables. Here are created for educational purposes only._
 
 ```{r}
 pbmc_small_polished_abundance %>%
@@ -729,7 +724,7 @@ pbmc_small_cluster <- pbmc_small_UMAP
 colLabels(pbmc_small_cluster) <-
     pbmc_small_pca %>%
     buildSNNGraph(use.dimred="PCA") %>%
-    igraph::cluster_walktrap() %$%
+    cluster_walktrap() %$%
     membership %>%
     as.factor()
 
@@ -802,7 +797,9 @@ pbmc_small_cluster %>%
 
 We can infer cell type identities using *SingleR* [@aran2019reference] and manipulate the output using tidyverse. SingleR [accepts any log-normalised transcript abundance matrix](https://bioconductor.org/packages/devel/bioc/vignettes/SingleR/inst/doc/SingleR.html)
 
-```{r eval=FALSE}
+```{r eval = FALSE}
+# DO NOT EXECUTE - CELLDEX DEPENDENCY NOT IN BIOCONDUCTOR YET
+
 # Get cell type reference data
 hpca <- HumanPrimaryCellAtlasData()
 
@@ -810,7 +807,7 @@ hpca <- HumanPrimaryCellAtlasData()
 cell_type_df <-
 	
   # extracting counts from SingleCellExperiment object
-  assays(pbmc_small_UMAP)$logcounts%>%
+  assays(pbmc_small_cluster)$logcounts%>%
 
 	# SingleR
   SingleR(
@@ -824,16 +821,21 @@ cell_type_df <-
   as.data.frame() %>%
   as_tibble(rownames = "label") %>%
   select(label, first.labels)
+```
 
+We have pre-calculated the cluster classification
+
+```{r}
+cell_type_df = biocasia2020tidytranscriptomics::cell_type_df
 cell_type_df
 ```
 
-```{r eval=FALSE}
+```{r }
 # Join UMAP and cell type info
 pbmc_small_cell_type <-
   pbmc_small_cluster %>%
   left_join(
-    cell_type_df, 
+    biocasia2020tidytranscriptomics::cell_type_df, 
   	by = "label"
   )
 
@@ -842,7 +844,7 @@ pbmc_small_cell_type
 
 We can easily summarise the results. For example, we can see how cell type classification overlaps with cluster classification.
 
-```{r eval=FALSE}
+```{r }
 pbmc_small_cell_type %>%
   count(label, first.labels)
 ```
@@ -852,7 +854,7 @@ pbmc_small_cell_type %>%
 
 A powerful tool we can use with tidySCE is `nest`. We can easily perform independent analyses on subsets of the dataset. First we classify cell types in lymphoid and myeloid; then, nest based on the new classification
 
-```{r eval=FALSE}
+```{r}
 pbmc_small_nested <-
   pbmc_small_cell_type %>%
   filter(first.labels != "Platelets") %>%
@@ -870,7 +872,7 @@ pbmc_small_nested
 
 Now we can independently perform analyses for the lymphoid and myeloid cell subsets.
 
-```{r, eval=FALSE, warning=FALSE}
+```{r, warning=FALSE}
 pbmc_small_nested %>%
 mutate(variable_genes = map_chr(
   data, ~ .x %>%
