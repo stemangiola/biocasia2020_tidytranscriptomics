@@ -50,7 +50,7 @@ custom_theme <-
   )
 ```
 
-# Part 1 Bulk RNA-seq Core
+# Part 1 Bulk RNA-seq
 
 ## How to start from tables
 
@@ -237,9 +237,7 @@ dotplot( enrH )
 emapplot(enrH)
 ```
 
-# Part 2 Bulk RNA-seq Extended
-
-## Nested analyses 
+# Nested analyses 
 
 `tidybulk` allows for data nesting, using the `tidyr` utility `nest`. This is an extremely powerful tool as it enables easily performing analyses on data subsets.
 

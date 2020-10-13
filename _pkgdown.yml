@@ -15,8 +15,8 @@ navbar:
   left:
     - text: Workshop
       href: articles/tidytranscriptomics.html
-    - text: Solutions 
-      href: articles/solutions.html
+    - text: Supplementary
+      href: articles/supplementary.html
 
   right:
    - icon: fa-github
