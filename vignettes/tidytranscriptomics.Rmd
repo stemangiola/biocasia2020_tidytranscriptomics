@@ -43,19 +43,6 @@ Some of the material in Part 1 was adapted from an R for RNA sequencing workshop
 knitr::include_graphics("../inst/vignettes/tidybulk_logo.png")
 ```
 
-```{poll_1 class.source="poll"}
-Poll: Will you code along and/or try out exercises during this workshop?
-```
-
-
-```{poll_2 class.source="poll"}
-Poll: Do you have experience with transcriptomic analyses?
-```
-
-```{poll_3 class.source="poll"}
-Poll: Do you have experience with tidyverse?
-```
-
 ## Introduction
 Measuring gene expression on a genome-wide scale has become common practice over the last two decades or so, with microarrays predominantly used pre-2008. With the advent of next generation sequencing technology in 2008, an increasing number of scientists use this technology to measure and understand changes in gene expression in often complex systems. As sequencing costs have decreased, using RNA sequencing to simultaneously measure the expression of tens of thousands of genes for multiple samples has never been easier. The cost of these experiments has now moved from generating the data to storing and analysing it.
 
@@ -271,11 +258,6 @@ counts_scal_PCA <-
   reduce_dimensions(method="PCA")
 ```
 
-```{poll_4 class.source="poll"}
-Poll: What fraction of variance is explained by PC3?
-      See ?reduce_dimensions for how to get additional dimensions.
-```
-
 This joins the result to the counts object.
 
 ```{r}
@@ -413,11 +395,6 @@ de_all %>%
 
 
 ***
-
-
-```{poll_7 class.source="poll"}
-Which method detects the most differentially abundant transcripts, p value adjusted for multiple testing <  0.05 (FDR, adj.P.Val, padj)?
-```
 
 Or if we just wanted to run one method we could do that. The default method is edgeR quasi-likelihood.
 
@@ -591,11 +568,6 @@ BRCA_tidy %>%
   ggplot(aes(x=patient, y=proportion, fill=cell_type)) + 
   geom_bar(stat = "identity") +
   custom_theme 
-```
-
-
-```{poll_8 class.source="poll"}
-Poll: What is the most abundant cell type overall in BRCA samples?
 ```
 
 
@@ -943,6 +915,11 @@ mutate(variable_genes = map_chr(
 - Some basic steps of a single-cell RNA sequencing analysis are dimensionality reduction, cluster identification and cell type classification
 - `tidySCE` is an invisible layer that operates on a `SingleCellExperiment` object and enables us to visualise and manipulate data as if it were a tidy data frame.
 - `tidySCE` object is a `SingleCellExperiment object` so it can be used with any `SingleCellExperiment` compatible method
+
+
+```{poll class.source="poll"}
+Poll: What would be your preferred name for the package currently called tidySCE?
+```
 
 
 # Contributing
