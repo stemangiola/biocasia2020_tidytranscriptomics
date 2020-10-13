@@ -2,10 +2,9 @@ pandoc: 2.7.3
 pkgdown: 1.6.1
 pkgdown_sha: ~
 articles:
-  solutions: solutions.html
   supplementary: supplementary.html
   tidytranscriptomics: tidytranscriptomics.html
-last_built: 2020-10-13T04:56Z
+last_built: 2020-10-13T09:00Z
 urls:
   reference: https://stemangiola.github.io/biocasia2020_tidytranscriptomics/reference
   article: https://stemangiola.github.io/biocasia2020_tidytranscriptomics/articles
