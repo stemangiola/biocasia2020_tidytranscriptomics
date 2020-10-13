@@ -1,5 +1,4 @@
 <!-- badges: start -->
-[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.4067645.svg)](https://doi.org/10.5281/zenodo.4067645)
 [![.github/workflows/basic_checks.yaml](https://github.com/stemangiola/biocasia2020_tidytranscriptomics/workflows/.github/workflows/basic_checks.yaml/badge.svg)](https://github.com/stemangiola/biocasia2020_tidytranscriptomics/actions) [![Docker](https://github.com/Bioconductor/BioC2020/raw/master/docs/images/docker_icon.png)](https://hub.docker.com/repository/docker/stemangiola/biocasia2020_tidytranscriptomics) 	
 <!-- badges: end -->
 
@@ -85,8 +84,12 @@ The workshop format is a 55 min session consisting of hands-on demos with Q&A.
 * limma
 * edgeR
 * DESeq2
+* SummarizedExperiment
+* SingleCellExperiment
 * scater
 * scran
+* SingleR
+* igraph
 * airway
 * org.Hs.eg.db
 * dittoSeq
