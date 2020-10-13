@@ -52,7 +52,9 @@ There are many steps involved in analysing an RNA sequencing dataset. Sequenced 
 knitr::include_graphics("../inst/vignettes/bulk_RNAseq_pipeline.png")
 ```
 
-First, let’s load all the packages we will need to analyse the data. Note that you should load the *tidybulk* library after the tidyverse core packages for best integration.
+First, let’s load all the packages we will need to analyse the data. 
+
+_Note: you should load the *tidybulk* library after the tidyverse core packages for best integration._
 
 ```{r message=FALSE, warning=FALSE}
 # load libraries
@@ -211,6 +213,7 @@ airway %>%
 # Example code, no need to run
 
 # Prepare data set
+library(edgeR)
 dgList <- SE2DGEList(airway)
 group <- factor(dgList$samples$dex)
 keep.exprs <- filterByExpr(dgList, group=group)
@@ -315,6 +318,7 @@ Tidybulk enables a simplified way of generating a clustered heatmap of variable 
 ```{r eval=FALSE}
 # Example code, no need to run
 
+library(edgeR)
 dgList <- SE2DGEList(airway)
 group <- factor(dgList$samples$dex)
 keep.exprs <- filterByExpr(dgList, group=group)
@@ -385,16 +389,12 @@ de_all %>%
   ggpairs(1:4)
 ```
 
-***
+_Note: You may notice that the methods produce columns with different names for similar outputs. If you wish to make these consistent you can do that with tidyverse `rename`. For example, to rename the p value adjusted columns you could run below._
 
->Note 
+```{r}
+de_all %>% rename(deseq2_FDR = deseq2_padj, voom_FDR = voom_adj.P.Val)
+```
 
->You may notice that the methods produce columns with different names for similar outputs. If you wish to make these consistent you can do that with tidyverse `rename`. For example, to rename the p value adjusted columns you could run below.
-
->de_all %>% rename(deseq2_FDR = deseq2_padj, voom_FDR = voom_adj.P.Val)
-
-
-***
 
 Or if we just wanted to run one method we could do that. The default method is edgeR quasi-likelihood.
 
@@ -409,6 +409,7 @@ Tidybulk enables a simplified way of performing an RNA sequencing differential e
 ```{r eval=FALSE}
 # Example code, no need to run
 
+library(edgeR)
 dgList <- SE2DGEList(airway)
 group <- factor(dgList$samples$dex)
 keep.exprs <- filterByExpr(dgList, group=group)
@@ -598,14 +599,13 @@ knitr::include_graphics("../inst/vignettes/single_cell_RNAseq_pipeline.png")
 
 In Part 1 we showed how we can study the cell-type composition of a biological sample using bulk RNA sequencing.  Single cell sequencing enables a more direct estimation of cell-type composition and gives greater resolution. For bulk RNA sequencing we need to infer the cell types using the abundance of transcripts in the whole sample, with single-cell RNA sequencing we can directly measure the transcripts in each cell and then classify the cells into cell types. 
 
-SingleCellExperiment is a very popular container for single cell RNA sequencing data [@sce] .
+SingleCellExperiment is a very popular container for single cell RNA sequencing data [@sce].
 
-tidySCE provides a bridge between the SingleCellExperiment single-cell package [@sce] and the tidyverse [@wickham2019welcome]. It enables the display the
+tidySCE provides a bridge between the SingleCellExperiment single-cell package [@sce] and the tidyverse [@wickham2019welcome]. It enables the display of the
 SingleCellExperiment object as a tidyverse tibble, and provides SingleCellExperiment-compatible *dplyr*, *tidyr*, *ggplot* and *plotly* functions.
 
 
 ```{r message=FALSE, warning=FALSE}
-
 # load additional libraries
 library(biocasia2020tidytranscriptomics)
 library(dplyr)
@@ -658,10 +658,9 @@ pbmc_small_polished <-
 pbmc_small_polished
 ```
 
-## Calculation the logarithm of the scaled counts
+## Calculate the log of the scaled counts
 
-We can treat `pbmc_small_polished` as a *SingleCellExperiment* object. 
-From [here](https://www.bioconductor.org/packages/release/bioc/vignettes/SingleCellExperiment/inst/doc/intro.html)
+We can treat `pbmc_small_polished` as a [*SingleCellExperiment* object](https://www.bioconductor.org/packages/release/bioc/vignettes/SingleCellExperiment/inst/doc/intro.html)
 
 ```{r}
 counts <- assay(pbmc_small_polished, "counts")
@@ -671,7 +670,7 @@ logcounts(pbmc_small_polished) <- log2(t(t(counts)/size.factors) + 1)
 assayNames(pbmc_small_polished)
 ```
 
-## Exploration
+## Exploratory analyses
 
 Here we plot abundance of two transcripts for each group.
 
@@ -686,7 +685,7 @@ pbmc_small_polished_abundance
 ```
 
 We proceed to plot. 
-_Note: we don't need to create many of these temporary variables. Here are created for educational purposes only._
+_Note: we don't need to create many of these temporary variables. They are created here for educational purposes only._
 
 ```{r}
 pbmc_small_polished_abundance %>%
@@ -796,7 +795,6 @@ plotHeatmap(
   columns=order(pbmc_small_cluster$label), 
   colour_columns_by=c("label")
 ) 
-
 ```
 
 ### Using tidyverse
@@ -817,13 +815,11 @@ pbmc_small_cluster %>%
   # Add annotation
   add_tile(label) %>%
   add_point(PC1)
-  
-
 ```
 
 ## Cell type classification
 
-We can infer cell type identities using *SingleR* [@aran2019reference] and manipulate the output using tidyverse. SingleR [accepts any log-normalised transcript abundance matrix](https://bioconductor.org/packages/devel/bioc/vignettes/SingleR/inst/doc/SingleR.html)
+We can infer cell type identities using *SingleR* [@aran2019reference] and manipulate the output using tidyverse. SingleR [accepts any log-normalised transcript abundance matrix.](https://bioconductor.org/packages/devel/bioc/vignettes/SingleR/inst/doc/SingleR.html)
 
 ```{r eval = FALSE}
 # DO NOT EXECUTE - CELLDEX DEPENDENCY NOT IN BIOCONDUCTOR YET
@@ -851,10 +847,10 @@ cell_type_df <-
   select(label, first.labels)
 ```
 
-We have pre-calculated the cluster classification
+We have pre-calculated the cluster classification.
 
 ```{r}
-cell_type_df = biocasia2020tidytranscriptomics::cell_type_df
+cell_type_df <- biocasia2020tidytranscriptomics::cell_type_df
 cell_type_df
 ```
 
