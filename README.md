@@ -45,7 +45,7 @@ Alternatively, you could install the workshop using the commands below in R `4.0
 ```
 # Install same versions used in the workshop
 #install.packages('remotes')
-remotes::install_github(c("stemangiola/tidybulk@v1.1.8", "stemangiola/tidySCE@v0.99.0", "stemangiola/tidyHeatmap@v1.1.5"))
+remotes::install_github(c("stemangiola/tidybulk@v1.1.8", "stemangiola/tidySCE@v0.99.2", "stemangiola/tidyHeatmap@v1.1.5"))
 
 # Install workshop package
 remotes::install_github("stemangiola/biocasia2020_tidytranscriptomics", build_vignettes = TRUE)
