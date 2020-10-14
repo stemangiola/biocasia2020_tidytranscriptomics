@@ -6,7 +6,7 @@ COPY --chown=rstudio:rstudio . /home/rstudio/
 
 RUN Rscript -e "install.packages('remotes')"
 
-RUN Rscript -e "BiocManager::install(c('stemangiola/tidybulk@v1.1.8', 'stemangiola/tidySCE@v0.99.0', 'stemangiola/tidyHeatmap@v1.1.5'))"
+RUN Rscript -e "BiocManager::install(c('stemangiola/tidybulk@v1.1.8', 'stemangiola/tidySCE@v0.99.2', 'stemangiola/tidyHeatmap@v1.1.5'))"
 
 RUN Rscript -e "options(repos = c(CRAN = 'https://cran.r-project.org')); BiocManager::install(ask=FALSE)"
 
