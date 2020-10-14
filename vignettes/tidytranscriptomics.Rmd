@@ -391,7 +391,7 @@ de_all %>%
 
 _Note: You may notice that the methods produce columns with different names for similar outputs. If you wish to make these consistent you can do that with tidyverse `rename`. For example, to rename the p value adjusted columns you could run below._
 
-```{r}
+```{r eval=FALSE}
 de_all %>% rename(deseq2_FDR = deseq2_padj, voom_FDR = voom_adj.P.Val)
 ```
 
