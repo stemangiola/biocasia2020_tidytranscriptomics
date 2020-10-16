@@ -122,6 +122,9 @@ data(airway)
 counts_airway <-
 	airway %>%
 	tidybulk()
+
+# take a look
+counts_airway
 ```
 
 The `counts_airway` object contains information about genes and samples, the first column has the Ensembl gene identifier, the second column has the sample identifier and the third column has the gene transcription abundance. The abundance is the number of reads aligning to the gene in each experimental sample. The remaining columns include sample-wise information. The dex column tells us whether the samples are treated or untreated and the cell column tells us what cell line they are from.
@@ -137,11 +140,18 @@ With tidyverse, all above steps can be linked with the `%>%`, as shown below. Th
 * the steps can be seen more clearly.
 
 ```{r}
+# setup data workflow
 counts_tt <- 	
 	airway %>%
 	tidybulk() %>%
 	mutate(sample=str_remove(sample, "SRR1039")) %>%
-	mutate(symbol = AnnotationDbi::mapIds(org.Hs.eg.db::org.Hs.eg.db, keys = as.character(feature), keytype = "ENSEMBL", column="SYMBOL", multiVals = "first"))
+	mutate(symbol = AnnotationDbi::mapIds(org.Hs.eg.db::org.Hs.eg.db, 
+	                                      keys = as.character(feature), 
+	                                      keytype = "ENSEMBL", 
+	                                      column="SYMBOL", 
+	                                      multiVals = "first"))
+# take a look
+counts_tt
 ```
 
 From this tidybulk tibble, we can perform differential expression analysis with the tidybulk package.
@@ -178,7 +188,11 @@ We can visualise the difference of abundance densities before and after scaling.
 
 ```{r out.width = "70%"}
 counts_scaled %>%
+  
+  # Reshaping
 	pivot_longer(cols = c("counts", "counts_scaled"), names_to = "source", values_to = "abundance") %>%
+  
+  # Plotting
 	ggplot(aes(x=abundance + 1, color=sample)) +
 	geom_density() +
 	facet_wrap(~source) +
@@ -306,8 +320,8 @@ counts_scal_PCA %>%
 	      .value = counts_scaled,
 	      transform = log1p
 	) %>%
-        add_tile(dex) %>%
-        add_tile(cell)
+  add_tile(dex) %>%
+  add_tile(cell)
 ```
 
 In the heatmap we can see the samples cluster into two groups, treated and untreated, for three of the cell lines, and the cell line (N080611) again is further away from the others.
@@ -382,7 +396,7 @@ This outputs the columns from each method such as log-fold change (logFC), false
 
 We can visually compare the significance for all methods. We will notice that there is some difference between the methods.
 
-```{r}
+```{r message=FALSE}
 de_all %>%
   pivot_transcript() %>%
   select(edgerQLT_PValue, edgerLR_PValue, voom_P.Value, deseq2_pvalue, feature) %>%
@@ -496,28 +510,6 @@ strip_chart <-
 strip_chart
 ```
 
-We can also easily check the raw and scaled counts for these genes.
-
-```{r}
-counts_scaled %>%
-
-  # extract counts for top differentially expressed genes
-  filter(symbol %in% topgenes_symbols) %>%
-
-  # reshape to create column ("source") containing the raw and scaled counts     
-  pivot_longer(
-  	c(counts, counts_scaled), 
-  	names_to = "source", 
-  	values_to = "count"
-  ) %>%
-
-  # make faceted stripchart
-  ggplot(aes(x = source, y = count + 1, fill = dex)) +
-	geom_boxplot() +
-    facet_wrap(~symbol) +
-    scale_y_log10() +
-	custom_theme
-```
 
 ## Interactive Plots
 
@@ -532,7 +524,7 @@ strip_chart %>% ggplotly(tooltip = c("label", "y"))
 
 ## Automatic bibliography
 
-Tidybulk provides a handy function called `get_bibliography` that you can use to obtain the references for the methods used. The references are in BibTeX format and can be imported into your reference manager.
+Tidybulk provides a handy function called `get_bibliography` that keeps track of the references for the methods used in your tidybulk workflow. The references are in BibTeX format and can be imported into your reference manager.
 
 ```{r}
 get_bibliography(counts_de)
@@ -559,13 +551,19 @@ With tidybulk, we can easily infer the proportions of cell types within a tissue
 
 ```{r}
 BRCA_tidy %>%
- deconvolve_cellularity(action="get") %>%
- pivot_longer(
-   contains("cibersort"), 
-   names_prefix = "cibersort: ", 
-   names_to = "cell_type",
-   values_to = "proportion"
+  
+  # Identifying cell types
+  deconvolve_cellularity(action="get") %>%
+
+  # Reshaping 
+  pivot_longer(
+    contains("cibersort"), 
+    names_prefix = "cibersort: ", 
+    names_to = "cell_type",
+    values_to = "proportion"
   ) %>%
+  
+  # Plotting
   ggplot(aes(x=patient, y=proportion, fill=cell_type)) + 
   geom_bar(stat = "identity") +
   custom_theme 
@@ -719,7 +717,7 @@ pbmc_small_pca
 
 If a tidyverse-compatible package is not included in the tidySCE collection, we can use `as_tibble` to permanently convert `tidySCE` into a tibble.
 
-```{r pc_plot}
+```{r pc_plot, message=FALSE}
 # Create pairs plot with GGally
 pbmc_small_pca %>%
     as_tibble() %>%
