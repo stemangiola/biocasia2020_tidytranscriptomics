@@ -59,9 +59,9 @@ To run the code, you could then copy and paste the code from the workshop vignet
 
 ## Workshop Description
 
-This workshop will present how to perform analysis of RNA sequencing data following the tidy data paradigm. The tidy data paradigm provides a standard way to organise data values within a dataset, where each variable is a column, each observation is a row, and data is manipulated using an easy-to-understand vocabulary. Most importantly, the data structure remains consistent across manipulation and analysis functions.
+This workshop will present how to perform analysis of RNA sequencing count data following the tidy data paradigm. The tidy data paradigm provides a standard way to organise data values within a dataset, where each variable is a column, each observation is a row, and data is manipulated using an easy-to-understand vocabulary. Most importantly, the data structure remains consistent across manipulation and analysis functions.
 
-This can be achieved for RNA sequencing data with the [tidybulk](https://stemangiola.github.io/tidybulk/), [tidySCE](https://stemangiola.github.io/tidySCE/),  [tidyHeatmap](https://stemangiola.github.io/tidyHeatmap/) and [tidyverse](https://www.tidyverse.org/) packages. The tidybulk package provides a tidy data structure and a modular framework for bulk transcriptional analyses, the tidySCE package provides similar for single-cell transcriptional analyses, and tidyHeatmap provides a tidy implementation of ComplexHeatmap. These packages are part of the tidytranscriptomics suite that introduces a tidy approach to RNA sequencing data.
+This can be achieved for RNA sequencing count data with the [tidybulk](https://stemangiola.github.io/tidybulk/), [tidySCE](https://stemangiola.github.io/tidySCE/),  [tidyHeatmap](https://stemangiola.github.io/tidyHeatmap/) and [tidyverse](https://www.tidyverse.org/) packages. The tidybulk package provides a tidy data structure and a modular framework for bulk transcriptional analyses, the tidySCE package provides similar for single-cell transcriptional analyses, and tidyHeatmap provides a tidy implementation of ComplexHeatmap. These packages are part of the tidytranscriptomics suite that introduces a tidy approach to RNA sequencing data.
 
 ### Pre-requisites
 
@@ -110,17 +110,17 @@ Rough guide
 
 ### Workshop goals and objectives
 
-In exploring and analysing RNA sequencing data, there are a number of key concepts, such as filtering, scaling, dimensionality reduction, hypothesis testing, clustering and visualisation, that need to be understood. These concepts can be intuitively explained to new users, however, (i) the use of a heterogeneous vocabulary and jargon by methodologies/algorithms/packages, (ii) the complexity of data wrangling, and (iii) the coding burden, impede effective learning of the statistics and biology underlying an informed RNA sequencing analysis.
+In exploring and analysing RNA sequencing count data, there are a number of key concepts, such as filtering, scaling, dimensionality reduction, hypothesis testing, clustering and visualisation, that need to be understood. These concepts can be intuitively explained to new users, however, (i) the use of a heterogeneous vocabulary and jargon by methodologies/algorithms/packages, (ii) the complexity of data wrangling, and (iii) the coding burden, impede effective learning of the statistics and biology underlying an informed RNA sequencing analysis.
 
 The tidytranscriptomics approach to RNA sequencing data analysis abstracts out the coding-related complexity and provides tools that use an intuitive and jargon-free vocabulary, enabling focus on the statistical and biological challenges.
 
 #### Learning goals
 
-* To understand the key concepts and steps of RNA sequencing data analysis
+* To understand the key concepts and steps of RNA sequencing count data analysis
 * To approach data representation and analysis though a tidy data paradigm, integrating tidyverse with tidybulk, tidySCE and tidyHeatmap.
 
 #### Learning objectives
 
-* Recall the key concepts of RNA sequencing data analysis
+* Recall the key concepts of RNA sequencing count data analysis
 * Apply the concepts to publicly available data
 * Create plots that summarise the information content of the data and analysis results
