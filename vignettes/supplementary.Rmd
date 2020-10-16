@@ -197,6 +197,39 @@ counts_de %>%
 	theme_bw()
 ```
 
+## How to visualise both raw and scaled counts for genes
+
+```{r}
+# extract some genes
+topgenes_symbols <-
+	counts_de %>%
+	pivot_transcript() %>%
+	arrange(PValue) %>%
+	head(6) %>% 
+  pull(symbol)
+
+
+# make stripchart
+counts_scaled %>%
+  
+    # extract counts for top differentially expressed genes
+    filter(symbol %in% topgenes_symbols) %>%
+  
+    # reshape     
+    pivot_longer(
+    	c(counts, counts_scaled), 
+    	names_to = "source", 
+    	values_to = "count"
+    ) %>%
+  
+    # make faceted stripchart
+    ggplot(aes(x = source, y = count + 1, fill = dex)) +
+  	geom_boxplot() +
+  	geom_jitter() +
+    facet_wrap(~symbol) +
+    scale_y_log10() +
+  	custom_theme
+```
 
 ## How to perform gene enrichment analysis
 

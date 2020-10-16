@@ -510,28 +510,6 @@ strip_chart <-
 strip_chart
 ```
 
-We can also easily check the raw and scaled counts for these genes.
-
-```{r}
-counts_scaled %>%
-
-  # extract counts for top differentially expressed genes
-  filter(symbol %in% topgenes_symbols) %>%
-
-  # reshape to create column ("source") containing the raw and scaled counts     
-  pivot_longer(
-  	c(counts, counts_scaled), 
-  	names_to = "source", 
-  	values_to = "count"
-  ) %>%
-
-  # make faceted stripchart
-  ggplot(aes(x = source, y = count + 1, fill = dex)) +
-	geom_boxplot() +
-    facet_wrap(~symbol) +
-    scale_y_log10() +
-	custom_theme
-```
 
 ## Interactive Plots
 
