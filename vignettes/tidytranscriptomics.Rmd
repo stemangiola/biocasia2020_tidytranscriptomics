@@ -396,7 +396,7 @@ This outputs the columns from each method such as log-fold change (logFC), false
 
 We can visually compare the significance for all methods. We will notice that there is some difference between the methods.
 
-```{r}
+```{r message=FALSE}
 de_all %>%
   pivot_transcript() %>%
   select(edgerQLT_PValue, edgerLR_PValue, voom_P.Value, deseq2_pvalue, feature) %>%
@@ -739,7 +739,7 @@ pbmc_small_pca
 
 If a tidyverse-compatible package is not included in the tidySCE collection, we can use `as_tibble` to permanently convert `tidySCE` into a tibble.
 
-```{r pc_plot}
+```{r pc_plot, message=FALSE}
 # Create pairs plot with GGally
 pbmc_small_pca %>%
     as_tibble() %>%
