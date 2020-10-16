@@ -122,6 +122,9 @@ data(airway)
 counts_airway <-
 	airway %>%
 	tidybulk()
+
+# take a look
+counts_airway
 ```
 
 The `counts_airway` object contains information about genes and samples, the first column has the Ensembl gene identifier, the second column has the sample identifier and the third column has the gene transcription abundance. The abundance is the number of reads aligning to the gene in each experimental sample. The remaining columns include sample-wise information. The dex column tells us whether the samples are treated or untreated and the cell column tells us what cell line they are from.
@@ -137,11 +140,18 @@ With tidyverse, all above steps can be linked with the `%>%`, as shown below. Th
 * the steps can be seen more clearly.
 
 ```{r}
+# setup data workflow
 counts_tt <- 	
 	airway %>%
 	tidybulk() %>%
 	mutate(sample=str_remove(sample, "SRR1039")) %>%
-	mutate(symbol = AnnotationDbi::mapIds(org.Hs.eg.db::org.Hs.eg.db, keys = as.character(feature), keytype = "ENSEMBL", column="SYMBOL", multiVals = "first"))
+	mutate(symbol = AnnotationDbi::mapIds(org.Hs.eg.db::org.Hs.eg.db, 
+	                                      keys = as.character(feature), 
+	                                      keytype = "ENSEMBL", 
+	                                      column="SYMBOL", 
+	                                      multiVals = "first"))
+# take a look
+counts_tt
 ```
 
 From this tidybulk tibble, we can perform differential expression analysis with the tidybulk package.
