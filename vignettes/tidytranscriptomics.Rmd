@@ -188,7 +188,11 @@ We can visualise the difference of abundance densities before and after scaling.
 
 ```{r out.width = "70%"}
 counts_scaled %>%
+  
+  # Reshaping
 	pivot_longer(cols = c("counts", "counts_scaled"), names_to = "source", values_to = "abundance") %>%
+  
+  # Plotting
 	ggplot(aes(x=abundance + 1, color=sample)) +
 	geom_density() +
 	facet_wrap(~source) +
@@ -569,13 +573,19 @@ With tidybulk, we can easily infer the proportions of cell types within a tissue
 
 ```{r}
 BRCA_tidy %>%
- deconvolve_cellularity(action="get") %>%
- pivot_longer(
-   contains("cibersort"), 
-   names_prefix = "cibersort: ", 
-   names_to = "cell_type",
-   values_to = "proportion"
+  
+  # Identifying cell types
+  deconvolve_cellularity(action="get") %>%
+
+  # Reshaping 
+  pivot_longer(
+    contains("cibersort"), 
+    names_prefix = "cibersort: ", 
+    names_to = "cell_type",
+    values_to = "proportion"
   ) %>%
+  
+  # Plotting
   ggplot(aes(x=patient, y=proportion, fill=cell_type)) + 
   geom_bar(stat = "identity") +
   custom_theme 
