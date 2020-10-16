@@ -60,7 +60,7 @@ data(airway)
 
 # counts table
 counts <- assay(airway) %>%
-  as_tibble(rownames = "geneID")
+  as_tibble(rownames = "gene_id")
 
 # sample information table
 sampleinfo <- colData(airway) %>%
@@ -73,10 +73,14 @@ counts_tt <-
 	pivot_longer(counts, cols = starts_with("SRR"), names_to = "sample", values_to = "counts") %>%
 
 	# get gene symbols
-	ensembl_to_symbol(geneID) %>%
+	mutate(symbol = AnnotationDbi::mapIds(org.Hs.eg.db::org.Hs.eg.db, 
+	                                      keys = as.character(gene_id), 
+	                                      keytype = "ENSEMBL", 
+	                                      column="SYMBOL", 
+	                                      multiVals = "first")) %>%
 
 	# order the columns for tidybulk
-	select(sample, geneID, counts, transcript) %>%
+	select(sample, gene_id, counts, symbol) %>%
 
 	# add the sample info
 	left_join(sampleinfo) %>%
@@ -85,7 +89,7 @@ counts_tt <-
 	mutate(sample=str_remove(sample, "SRR1039")) %>%
 
 	# convert to tidybulk tibble
-	tidybulk(.sample=sample, .transcript=geneID, .abundance=counts)
+	tidybulk(.sample=sample, .transcript=gene_id, .abundance=counts)
 ```
 
 ## How to count reads per sample
@@ -147,7 +151,7 @@ counts_scaled %>%
 ```{r out.width = "70%"}
 airway %>%
 	tidybulk() %>%
-    keep_abundant(factor_of_interest = dex) %>%
+  keep_abundant(factor_of_interest = dex) %>%
 	scale_abundance() %>%
 	reduce_dimensions(method="MDS", scale = FALSE) %>%
 	pivot_sample() %>%
@@ -186,10 +190,10 @@ counts_de %>%
 	
 	# Subset data
 	mutate(significant = FDR<0.05 & abs(logFC) >=2) %>%
-	mutate(transcript = ifelse(abs(logFC) >=5, as.character(transcript), "")) %>%
+	mutate(symbol = ifelse(abs(logFC) >=5, as.character(symbol), "")) %>%
 	
 	# Plot
-	ggplot(aes(x = logCPM, y = logFC, label=transcript)) +
+	ggplot(aes(x = logCPM, y = logFC, label=symbol)) +
 	geom_point(aes(color = significant, size = significant, alpha=significant)) +
 	geom_text_repel() +
 	scale_color_manual(values=c("black", "#e11f28")) +
