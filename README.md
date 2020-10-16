@@ -4,7 +4,7 @@
 
 # Introduction to Tidy Transcriptomics
 <p float="left">
-<img height="100" alt="biocasia2020" src="biocasia_logo.png"/> 
+<img height="100" alt="biocasia2020" src="man/figures/biocasia_logo.png"/> 
 <img height="100" alt="tidybulk" src="https://github.com/Bioconductor/BiocStickers/blob/master/tidybulk/tidybulk.png?raw=true"/>
 </p>
 
