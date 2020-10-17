@@ -1,5 +1,7 @@
 <!-- badges: start -->
-[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.4087926.svg)](https://doi.org/10.5281/zenodo.4087926) [![.github/workflows/basic_checks.yaml](https://github.com/stemangiola/biocasia2020_tidytranscriptomics/workflows/.github/workflows/basic_checks.yaml/badge.svg)](https://github.com/stemangiola/biocasia2020_tidytranscriptomics/actions) [![Docker](https://github.com/Bioconductor/BioC2020/raw/master/docs/images/docker_icon.png)](https://hub.docker.com/repository/docker/stemangiola/biocasia2020_tidytranscriptomics) 	
+
+
+[![DOI](https://zenodo.org/badge/302014008.svg)](https://zenodo.org/badge/latestdoi/302014008) [![.github/workflows/basic_checks.yaml](https://github.com/stemangiola/biocasia2020_tidytranscriptomics/workflows/.github/workflows/basic_checks.yaml/badge.svg)](https://github.com/stemangiola/biocasia2020_tidytranscriptomics/actions) [![Docker](https://github.com/Bioconductor/BioC2020/raw/master/docs/images/docker_icon.png)](https://hub.docker.com/repository/docker/stemangiola/biocasia2020_tidytranscriptomics) 	
 <!-- badges: end -->
 
 # Introduction to Tidy Transcriptomics
