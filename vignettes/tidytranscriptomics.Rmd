@@ -553,7 +553,7 @@ With tidybulk, we can easily infer the proportions of cell types within a tissue
 BRCA_tidy %>%
   
   # Identifying cell types
-  deconvolve_cellularity(action="get") %>%
+  deconvolve_cellularity(action="get", cores=2) %>%
 
   # Reshaping 
   pivot_longer(
@@ -636,7 +636,7 @@ pbmc_small_tidy
 **But it is a SingleCellExperiment object after all**
 
 ```{r}
-assays(pbmc_small_tidy)
+assayNames(pbmc_small_tidy) # from SummarizedExperiment
 ```
 
 ## Polish the data
@@ -661,11 +661,11 @@ pbmc_small_polished
 We can treat `pbmc_small_polished` as a [*SingleCellExperiment* object](https://www.bioconductor.org/packages/release/bioc/vignettes/SingleCellExperiment/inst/doc/intro.html)
 
 ```{r}
-counts <- assay(pbmc_small_polished, "counts")
+counts <- assay(pbmc_small_polished, "counts")                         # from SummarizedExperiment
 libsizes <- colSums(counts)
 size.factors <- libsizes/mean(libsizes)
-logcounts(pbmc_small_polished) <- log2(t(t(counts)/size.factors) + 1)
-assayNames(pbmc_small_polished)
+logcounts(pbmc_small_polished) <- log2(t(t(counts)/size.factors) + 1)  # from SingleCellExperiment
+assayNames(pbmc_small_polished)                                        # from SummarizedExperiment
 ```
 
 ## Exploratory analyses
@@ -691,6 +691,7 @@ pbmc_small_polished_abundance %>%
   geom_boxplot(outlier.shape=NA) +
   geom_jitter(alpha=0.5, width=0.2) +
   scale_y_log10() +
+  facet_wrap(~transcript, scales="free_y") +
   custom_theme
 ```
 
@@ -703,13 +704,13 @@ We proceed with data processing with Bioconductor packages, such as *scran* [@lu
 ```{r preprocess}
 variable_genes <-
     pbmc_small_polished %>%
-    modelGeneVar() %>%
-    getTopHVGs(prop=0.1)
+    modelGeneVar() %>%                 # from scran
+    getTopHVGs(prop=0.1)               # from scran
 
 # Perform PCA with scater
 pbmc_small_pca <-
     pbmc_small_polished %>%
-    runPCA(subset_row=variable_genes)
+    runPCA(subset_row=variable_genes)  # from scater
 
 pbmc_small_pca
 
@@ -733,7 +734,7 @@ Beside PCA which is a linear dimensionality reduction, we can apply neighbour aw
 ```{r umap}
 pbmc_small_UMAP <-
     pbmc_small_pca %>%
-    runUMAP(ncomponents=3)
+    runUMAP(ncomponents=3)           # from scater
 
 pbmc_small_UMAP
 ```
@@ -745,11 +746,12 @@ We can proceed with cluster identification with *scran*.
 ```{r cluster}
 pbmc_small_cluster <- pbmc_small_UMAP
 
-# Assign clusters to the 'colLabels' of the SingleCellExperiment object
-colLabels(pbmc_small_cluster) <-
+# Assign clusters to the 'colLabels' 
+# of the SingleCellExperiment object
+colLabels(pbmc_small_cluster) <-                                          # from SingleCellExperiment
     pbmc_small_pca %>%
-    buildSNNGraph(use.dimred="PCA") %>%
-    cluster_walktrap() %$%
+    buildSNNGraph(use.dimred="PCA") %>%                                   # from scran - shared nearest neighbor
+    cluster_walktrap() %$%                                                # from igraph
     membership %>%
     as.factor()
 
@@ -760,8 +762,7 @@ pbmc_small_cluster %>% select(label, everything())
 Now we can interrogate the object as if it was a regular tibble data frame.
 
 ```{r cluster count}
-pbmc_small_cluster %>%
-    count(groups, label)
+pbmc_small_cluster %>% count(groups, label)
 ```
 
 And we can plot them using 3D plot using plotly.
@@ -787,7 +788,7 @@ knitr::include_graphics("../inst/vignettes/plotly.png")
 ### Using scater
 
 ```{r}
-plotHeatmap(
+plotHeatmap(                                  # from scater
   pbmc_small_cluster, 
   features=variable_genes, 
   columns=order(pbmc_small_cluster$label), 
@@ -804,7 +805,7 @@ pbmc_small_cluster %>%
   join_transcripts(transcripts=variable_genes) %>%
   
   # Plot heatmap
-  heatmap(
+  heatmap(                                            # from tidyHeatmap
     .row = transcript,
     .column = cell, 
     .value = abundance_logcounts
@@ -857,7 +858,7 @@ cell_type_df
 pbmc_small_cell_type <-
   pbmc_small_cluster %>%
   left_join(
-    biocasia2020tidytranscriptomics::cell_type_df, 
+    cell_type_df, 
   	by = "label"
   )
 
