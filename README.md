@@ -23,6 +23,8 @@ This material was created for the [BioC Asia 2020 conference](https://biocasia20
 
 More details on the workshop are below.
 
+**Update: 23rd Oct 2020. The tidySCE package has been renamed to tidySingleCellExperiment.**
+
 ## Workshop package installation 
 
 This is necessary in order to reproduce the code shown in the workshop. The workshop is designed for R `4.0` and can be installed using one of the two ways below.
